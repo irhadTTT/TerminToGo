@@ -12,8 +12,10 @@ Built with **FastAPI**, **PostgreSQL**, **SQLAlchemy**, and **Alembic**, followi
 |---|---|
 | 🏢 **Business Management** | Create and retrieve businesses |
 | 💇 **Service Management** | Manage services, duration, and pricing |
-| 📅 **Appointment Management** | Create and retrieve appointments |
+| 📅 **Appointment Management** | Create, retrieve, cancel, and reschedule appointments |
 | 🕐 **Availability** | Calculate available appointment slots |
+| 🔐 **User Authentication** | JWT-based authentication with access and refresh tokens |
+| 🚦 **Rate Limiting** | Protect authentication endpoints with request rate limiting |
 | 🗄️ **PostgreSQL** | Relational database for persistent storage |
 | 🔄 **Alembic** | Database schema migrations |
 | 🏗️ **Layered Architecture** | Routers → Services → Repositories |
@@ -303,8 +305,6 @@ This prevents internal implementation details from being exposed to API clients.
 
 Potential future improvements include:
 
-- User authentication and authorization
-- Appointment cancellation and rescheduling
 - Business working hours
 - Email notifications
 - Automated tests

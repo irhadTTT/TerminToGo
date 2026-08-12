@@ -13,3 +13,8 @@ class User(Base):
     password = Column(String, nullable=False)
     role = Column(String, default="user")
     is_verified = Column(Boolean, default=False)
+
+    appointments = relationship(
+        "Appointment",
+        back_populates="customer"
+    )

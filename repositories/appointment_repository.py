@@ -10,7 +10,7 @@ def create_appointment(
     appointment_data: AppointmentCreate,
 ) -> Appointment:
     appointment = Appointment(
-        customer_name=appointment_data.customer_name,
+        customer_id=appointment_data.customer_id,
         start_time=appointment_data.start_time,
         end_time=appointment_data.end_time,
         business_id=appointment_data.business_id,
@@ -71,4 +71,26 @@ def get_appointments_for_date(
             Appointment.status == "booked",
         )
         .all()
+    )
+
+def get_by_id(db: Session, appointment_id: int):
+    return db.query(Appointment).filter(Appointment.id == appointment_id).first()
+
+def has_conflict(
+    db: Session,
+    business_id: int,
+    start_time: datetime,
+    end_time: datetime,
+    appointment_id: int,
+):
+    return (
+        db.query(Appointment)
+        .filter(
+            Appointment.business_id == business_id,
+            Appointment.id != appointment_id,
+            Appointment.status == "booked",
+            Appointment.start_time < end_time,
+            Appointment.end_time > start_time,
+        )
+        .first()
     )

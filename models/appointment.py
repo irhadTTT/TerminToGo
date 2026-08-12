@@ -11,8 +11,6 @@ class Appointment(Base):
 
     id = Column(Integer, primary_key=True)
 
-    customer_name = Column(String, nullable=False)
-
     start_time = Column(DateTime, nullable=False)
     end_time = Column(DateTime, nullable=False)
 
@@ -41,5 +39,16 @@ class Appointment(Base):
 
     service = relationship(
         "Service",
+        back_populates="appointments"
+    )
+
+    customer_id = Column(
+        Integer,
+        ForeignKey("users.id"),
+        nullable=False
+    )
+
+    customer = relationship(
+        "User",
         back_populates="appointments"
     )

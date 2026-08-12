@@ -2,16 +2,19 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from datetime import date, datetime, time
 from fastapi import Query
-
+from dependencies import get_current_user
 from database import get_db
 from schemas.appointment import (
     AppointmentCreate, 
-    AppointmentResponse
+    AppointmentResponse,
+    AppointmentReschedule
 )
 from services.appointment_service import (
     create_new_appointment,
     get_business_appointments,
-    get_available_slots
+    get_available_slots,
+    cancel_appointment as cancel_appointment_service,
+    reschedule_appointment as reschedule_appointment_service
 )
 
 
@@ -60,3 +63,30 @@ def available_slots(
         "date": date,
         "available_slots": slots,
     }
+
+
+@router.patch("/{appointment_id}/cancel")
+def cancel_appointment(
+    appointment_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    return cancel_appointment_service(
+        appointment_id,
+        current_user,
+        db
+    )
+
+@router.patch("/{appointment_id}/reschedule")
+def reschedule_appointment(
+    appointment_id: int,
+    data: AppointmentReschedule,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    return reschedule_appointment_service(
+        appointment_id=appointment_id,
+        data=data,
+        current_user=current_user,
+        db=db
+    )
